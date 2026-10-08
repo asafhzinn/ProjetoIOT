@@ -6,7 +6,7 @@
             <a class="navbar-brand fw-bold text-primary" href="#">
                 Dashboard IoT
             </a>
-
+            <x-navbar>
             <!-- Menu de Navegação -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
