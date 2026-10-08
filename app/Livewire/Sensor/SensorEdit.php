@@ -35,7 +35,7 @@ class SensorEdit extends Component
     {
         $this->sensor->update($this->validate());
         session()->flash('success', 'Sensor atualizado com sucesso.');
-        $this->redirectRoute('sensores.index');
+        $this->redirectRoute('sensor.index');
     }
     public function render(): View
     {
