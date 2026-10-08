@@ -15,6 +15,7 @@
         @livewireStyles
     </head>
     <body class="bg-dark text-light">
+        
 
         <!-- Aqui é onde o componente da página será renderizado -->
         {{ $slot }}
