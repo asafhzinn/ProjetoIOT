@@ -36,6 +36,7 @@
             </div>
         </div>
     </x-navbar>
+
     <!-- Conteúdo Principal do Dashboard -->
     <div class="container-fluid px-4">
         
