@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-secondary-subtle px-3">
+<nav {{ $attributes->merge(['class' => 'navbar navbar-expand-lg bg-body-tertiary border-bottom border-secondary-subtle px-3']) }}>
     <div class="container-fluid">
         <a class="navbar-brand fw-bold text-primary" href="{{ url('/dashboard') }}">
             Dashboard IoT
