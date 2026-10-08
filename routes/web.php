@@ -12,14 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', Dashboard::class)->name('home');
 Route::get('/dashboard', Dashboard::class)->name('Dashboard');
 
-Route::prefix('ambientes')->name('ambientes.')->group(function () {
-    Route::get('/', AmbienteIndex::class)->name('index');
-    Route::get('/create', AmbienteCreate::class)->name('create');
-    Route::get('/{ambiente}/edit', AmbienteEdit::class)->name('edit');
-});
-
-Route::prefix('sensores')->name('sensores.')->group(function () {
-    Route::get('/', SensorIndex::class)->name('index');
-    Route::get('/create', SensorCreate::class)->name('create');
-    Route::get('/{sensor}/edit', SensorEdit::class)->name('edit');
-});
+Route::get('/ambiente', AmbienteIndex::class)->name('ambiente.index');
+Route::get('/ambiente/create', AmbienteCreate::class)->name('ambiente.create');
+Route::get('/ambiente/edit', AmbienteEdit::class)->name('ambiente.edit');
+Route::get('/sensor', SensorIndex::class)->name('sensor.index');
+Route::get('/sensor/create', SensorCreate::class)->name('sensor.create');
+Route::get('/sensor/edit', SensorEdit::class)->name('sensor.edit');

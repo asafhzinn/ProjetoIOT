@@ -1,150 +1,130 @@
-<div wire:poll.3s="atualizarDados" data-bs-theme="dark" class="bg-dark text-light min-vh-100">
-    <!-- Navbar Única do Bootstrap -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-secondary-subtle px-3 mb-4">
-        <div class="container-fluid">
-            <!-- Título / Logotipo -->
-            <a class="navbar-brand fw-bold text-primary" href="#">
-                Dashboard IoT
-            </a>
-            <x-navbar>
-            <!-- Menu de Navegação -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('ambientes.index') }}">
-                            <i class="bi bi-shield-check me-1"></i> Ambientes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('sensores.index') }}">
-                            <i class="bi bi-cpu me-1"></i> Sensores
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-list-ul me-1"></i> Registros
-                        </a>
-                    </li>
-                </ul>
-            </div>
+<div class="container-fluid py-4 bg-light min-vh-100">
 
-            <!-- Indicador Visual Lateral -->
-            <div class="d-flex align-items-center ms-auto">
-                <span class="badge bg-success-subtle text-success border border-success-subtle d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill small">
-                    <span class="spinner-grow spinner-grow-sm text-success" role="status"></span> Online
-                </span>
-            </div>
+    <div class="row align-items-center mb-4 g-3">
+
+        <div class="col-12 col-md-6">
+            <h1 class="h3 mb-1 fw-bold text-dark">Painel de Controle IoT</h1>
+            <p class="text-muted small mb-0">Monitore as leituras de sensores e status dos ambientes em tempo real.</p>
         </div>
-    </x-navbar>
 
-    <!-- Conteúdo Principal do Dashboard -->
-    <div class="container-fluid px-4">
-        
-        <!-- GRID DE CARDS DE STATUS -->
-        <div class="row g-3 mb-4">
-            <!-- Card Última Leitura (Substitui Temperatura isolada) -->
-            <div class="col-12 col-md-4">
-                <div class="card bg-body-tertiary border-secondary-subtle h-100 shadow-sm">
-                    <div class="card-body d-flex flex-column justify-content-between py-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="card-subtitle text-body-secondary fw-semibold text-uppercase small">Último Valor</h6>
-                            <span class="fs-4">📊</span>
-                        </div>
-                        <!-- Pega o valor do registro mais recente da lista se houver -->
-                        <h2 class="card-title display-6 fw-bold text-warning my-2">
-                            {{ !empty($registros) ? $registros[0]['valor'] : '—' }}
-                        </h2>
-                        <small class="text-success small">● {{ $statusAmbiente }}</small>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold tracking-wider"
+                            style="font-size: 0.7rem;">Ambientes</span>
+                        <h3 class="h2 mb-0 fw-bold text-dark mt-1">{{ count($ambientes ?? []) }}</h3>
                     </div>
-                </div>
-            </div>
-
-            <!-- Card Status do Sistema -->
-            <div class="col-12 col-md-4">
-                <div class="card bg-body-tertiary border-secondary-subtle h-100 shadow-sm">
-                    <div class="card-body d-flex flex-column justify-content-between py-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="card-subtitle text-body-secondary fw-semibold text-uppercase small">Status de Sincronia</h6>
-                            <span class="fs-4">🔄</span>
-                        </div>
-                        <h2 class="card-title fs-3 fw-bold text-primary my-2 text-truncate">
-                            {{ $statusAmbiente }}
-                        </h2>
-                        <small class="text-body-secondary small">Atualizando via Polling</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card Dispositivos (Total de Sensores) -->
-            <div class="col-12 col-md-4">
-                <div class="card bg-body-tertiary border-secondary-subtle h-100 shadow-sm">
-                    <div class="card-body d-flex flex-column justify-content-between py-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="card-subtitle text-body-secondary fw-semibold text-uppercase small">Sensores Ativos</h6>
-                            <span class="fs-4">🤖</span>
-                        </div>
-                        <h2 class="card-title display-6 fw-bold text-info my-2">{{ $totalSensores }}</h2>
-                        <small class="text-body-secondary small">Cadastrados no sistema</small>
+                    <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-2 d-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px;">
+                        <i class="fs-4 bi bi-house-door"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4 mb-4">
-            <!-- COLUNA DO GRÁFICO (Removido os scripts quebrados que dependiam de variáveis inexistentes) -->
-            <div class="col-12 col-lg-7">
-                <div class="card bg-body-tertiary border-secondary-subtle shadow-sm p-3 h-100">
-                    <h5 class="card-title mb-3 fw-semibold text-body-emphasis">Histórico do Ambiente</h5>
-                    <div class="d-flex flex-column justify-content-center align-items-center h-100 text-muted border border-dashed rounded py-5">
-                        <i class="bi bi-graph-up fs-1 mb-2"></i>
-                        <span class="small">Acompanhe os detalhes na tabela ao lado</span>
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold tracking-wider"
+                            style="font-size: 0.7rem;">Sensores Ativos</span>
+                        <h3 class="h2 mb-0 fw-bold text-dark mt-1">{{ $totalSensores ?? 0 }}</h3>
                     </div>
-                </div>
-            </div>
-
-            <!-- COLUNA DA LISTAGEM RECENTE -->
-            <div class="col-12 col-lg-5">
-                <div class="card bg-body-tertiary border-secondary-subtle shadow-sm p-3 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="card-title mb-0 fw-semibold text-body-emphasis">Registros Recentes</h5>
-                        <span class="badge bg-secondary-subtle text-secondary-heading small">Últimas leituras</span>
-                    </div>
-                    
-                    <div class="table-responsive">
-                        <table class="table table-dark table-hover table-striped align-middle mb-0 small">
-                            <thead>
-                                <tr class="text-secondary border-secondary">
-                                    <th scope="col">Dispositivo</th>
-                                    <th scope="col">Leitura Realizada</th>
-                                    <th scope="col">Horário</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse(array_slice($registros, 0, 5) as $registro)
-                                    <tr>
-                                        <td>
-                                            <span class="text-info fw-medium">{{ $registro['sensor'] }}</span>
-                                        </td>
-                                        <td class="text-warning fw-bold">
-                                            {{ $registro['valor'] }}
-                                        </td>
-                                        <td class="text-muted">
-                                            {{ date('H:i:s', strtotime(str_replace('/', '-', $registro['horario']))) }}
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center text-muted py-3">
-                                            Nenhum registro recebido ainda.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <div class="rounded-3 bg-success bg-opacity-10 text-success p-2 d-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px;">
+                        <i class="fs-4 bi bi-cpu"></i>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Última
+                            Temperatura</span>
+                        <h3 class="h2 mb-0 fw-bold text-dark mt-1">{{ $ultimaTemperatura ?? '0' }}°C</h3>
+                    </div>
+                    <div class="rounded-3 bg-warning bg-opacity-10 text-warning p-2 d-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px;">
+                        <i class="fs-4 bi bi-thermometer-half"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm p-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Total
+                            de Leituras</span>
+                        <h3 class="h2 mb-0 fw-bold text-dark mt-1">{{ $totalRegistros ?? 0 }}</h3>
+                    </div>
+                    <div class="rounded-3 bg-purple bg-opacity-10 p-2 d-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px; background-color: rgba(111, 66, 193, 0.1); color: #6f42c1;">
+                        <i class="fs-4 bi bi-database-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between border-bottom-0">
+            <h5 class="card-title mb-0 fw-bold text-dark">Histórico Recente de Leituras</h5>
+            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 fw-semibold"
+                style="font-size: 0.75rem;">
+                Tempo Real
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light text-uppercase fs-7 text-secondary">
+                    <tr>
+                        <th scope="col" class="ps-4" style="font-size: 0.75rem;">ID</th>
+                        <th scope="col" style="font-size: 0.75rem;">Ambiente</th>
+                        <th scope="col" style="font-size: 0.75rem;">Sensor</th>
+                        <th scope="col" style="font-size: 0.75rem;">Valor Capturado</th>
+                        <th scope="col" class="pe-4" style="font-size: 0.75rem;">Data / Hora</th>
+                    </tr>
+                </thead>
+                <tbody class="text-secondary" style="font-size: 0.9rem;">
+                    @forelse($registros ?? [] as $registro)
+                        <tr>
+                            <td class="ps-4 fw-bold text-dark">#{{ $registro->id }}</td>
+                            <td>{{ $registro->sensor->ambiente->nome ?? 'Não informado' }}</td>
+                            <td>
+                                <span class="badge bg-light text-dark border font-monospace px-2 py-1">
+                                    {{ $registro->sensor->nome ?? 'Desconhecido' }}
+                                </span>
+                            </td>
+                            <td class="fw-bold text-primary">{{ $registro->valor }}</td>
+                            <td class="pe-4 text-muted">
+                                {{ \Carbon\Carbon::parse($registro->created_at)->format('d/m/Y H:i:s') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                Nenhuma leitura de sensor encontrada para os filtros selecionados.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        @if (method_exists($registros, 'links'))
+            <div class="card-footer bg-light border-top-0 px-4 py-3">
+                {{ $registros->links() }}
+            </div>
+        @endif
     </div>
 </div>

@@ -1,29 +1,31 @@
 <!DOCTYPE html>
-<html data-bs-theme="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Bootstrap 5.3.8 CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <!-- Bootstrap Icons -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+        <title>{{ $title ?? 'Projeto Iot' }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-        <title>{{ $title ?? 'Painel IoT' }}</title>
-
-        <!-- Estilos do Livewire (Necessário para o Livewire v2/v3) -->
-        @livewireStyles
     </head>
-    <body class="bg-dark text-light">
+    <body>
+        <div class="d-flex" style="min-height: 100vh">
+  <nav class="d-flex flex-column flex-shrink-0 p-3 bg-body border-end" style="width: 260px" aria-label="Main navigation">
+    <a href="#" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none fs-5 fw-semibold">
+      <i></i>Projeto IOT
+    </a>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item"><a class="nav-link" aria-current="page" href="dashboard"><i class="bi bi-house-fill"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('ambiente.index')}}"><i class="bi bi-leaf-fill"></i> Ambiente</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ route('sensor.index')}}"><i class="bi bi-cpu"></i> Sensor</a></li>
+      
+    </ul>
+  </nav>
+  <main class="flex-grow-1 p-4">{{ $slot }}</main>
+</div>
+
         
-
-        <!-- Aqui é onde o componente da página será renderizado -->
-        {{ $slot }}
-
-        <!-- Bootstrap 5.3.8 Bundle JS (Inclui Popper) -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-
-        <!-- Scripts do Livewire (Necessário para o Livewire v2/v3) -->
-        @livewireScripts
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     </body>
 </html>
