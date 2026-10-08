@@ -9,12 +9,17 @@ use App\Livewire\Sensor\SensorEdit;
 use App\Livewire\Sensor\SensorIndex;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', Dashboard::class)->name('dashboard');
+Route::get('/', Dashboard::class)->name('home');
+Route::get('/dashboard', Dashboard::class)->name('Dashboard');
 
-Route::get('/ambientes', AmbienteIndex::class)->name('ambientes.index');
-Route::get('/ambientes/create', AmbienteCreate::class)->name('ambientes.create');
-Route::get('/ambientes/{ambiente}/edit', AmbienteEdit::class)->name('ambientes.edit');
+Route::prefix('ambientes')->name('ambientes.')->group(function () {
+    Route::get('/', AmbienteIndex::class)->name('index');
+    Route::get('/create', AmbienteCreate::class)->name('create');
+    Route::get('/{ambiente}/edit', AmbienteEdit::class)->name('edit');
+});
 
-Route::get('/sensores', SensorIndex::class)->name('sensores.index');
-Route::get('/sensores/create', SensorCreate::class)->name('sensores.create');
-Route::get('/sensores/{sensor}/edit', SensorEdit::class)->name('sensores.edit');
+Route::prefix('sensores')->name('sensores.')->group(function () {
+    Route::get('/', SensorIndex::class)->name('index');
+    Route::get('/create', SensorCreate::class)->name('create');
+    Route::get('/{sensor}/edit', SensorEdit::class)->name('edit');
+});

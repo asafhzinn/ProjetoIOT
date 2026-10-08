@@ -1,13 +1,1 @@
-<div>
-    <x-navbar />
-
-    <div class="container py-4" style="max-width: 720px">
-        <h1 class="h3 mb-4"><i class="bi bi-plus-lg me-2"></i>Novo sensor</h1>
-
-        <div class="card">
-            <div class="card-body">
-                @include('livewire.sensor.form')
-            </div>
-        </div>
-    </div>
-</div>
+<div data-bs-theme="dark" class="bg-dark text-light min-vh-100 py-4"><div class="container"><div class="mb-4"><a href="{{ route('sensores.index') }}" class="text-decoration-none text-secondary">← Sensores</a><h1 class="h3 mt-2">Novo sensor</h1></div>@include('livewire.partials.alerts')<form wire:submit="salvar" class="card bg-body-tertiary border-secondary-subtle shadow-sm"><div class="card-body"><div class="mb-3"><label for="ambiente_id" class="form-label">Ambiente *</label><select wire:model="ambiente_id" id="ambiente_id" class="form-select @error('ambiente_id') is-invalid @enderror"><option value="">Selecione um ambiente</option>@foreach($ambientes as $ambiente)<option value="{{ $ambiente->id }}">{{ $ambiente->nome }}</option>@endforeach</select>@error('ambiente_id')<div class="invalid-feedback">{{ $message }}</div>@enderror</div><div class="row g-3"><div class="col-md-6"><label for="codigo" class="form-label">Código *</label><input wire:model="codigo" id="codigo" class="form-control @error('codigo') is-invalid @enderror" type="text" maxlength="255" placeholder="Ex.: TEMP01">@error('codigo')<div class="invalid-feedback">{{ $message }}</div>@enderror</div><div class="col-md-6"><label for="tipo" class="form-label">Tipo *</label><input wire:model="tipo" id="tipo" class="form-control @error('tipo') is-invalid @enderror" type="text" maxlength="255" placeholder="Ex.: temperatura">@error('tipo')<div class="invalid-feedback">{{ $message }}</div>@enderror</div></div><div class="my-3"><label for="descricao" class="form-label">Descrição *</label><textarea wire:model="descricao" id="descricao" class="form-control @error('descricao') is-invalid @enderror" rows="4" maxlength="5000"></textarea>@error('descricao')<div class="invalid-feedback">{{ $message }}</div>@enderror</div><div class="form-check form-switch"><input wire:model="status" id="status" class="form-check-input" type="checkbox"><label for="status" class="form-check-label">Sensor ativo</label></div></div><div class="card-footer border-secondary-subtle d-flex justify-content-end gap-2"><a href="{{ route('sensores.index') }}" class="btn btn-outline-light">Cancelar</a><button wire:loading.attr="disabled" class="btn btn-primary" type="submit"><span wire:loading.remove>Salvar sensor</span><span wire:loading>Salvando...</span></button></div></form></div></div>

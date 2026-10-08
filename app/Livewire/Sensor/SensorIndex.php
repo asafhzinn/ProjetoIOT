@@ -1,51 +1,26 @@
 <?php
-
 namespace App\Livewire\Sensor;
-
 use App\Models\Sensor;
-use Livewire\Attributes\Title;
+use Illuminate\View\View;
 use Livewire\Component;
 use Livewire\WithPagination;
-
-#[Title('Sensores')]
 class SensorIndex extends Component
 {
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-
-    public string $busca = '';
-
-    public function updatingBusca(): void
+    public string $search = '';
+    public string $status = '';
+    protected $queryString = ['search', 'status'];
+    public function updatingSearch(): void { $this->resetPage(); }
+    public function updatingStatus(): void { $this->resetPage(); }
+    public function excluir(int $id): void { Sensor::findOrFail($id)->delete(); session()->flash('success', 'Sensor excluído com sucesso.'); }
+    public function render(): View
     {
-        $this->resetPage();
-    }
-
-    public function excluir(int $id): void
-    {
-        $sensor = Sensor::withCount('registros')->findOrFail($id);
-
-        if ($sensor->registros_count > 0) {
-            session()->flash('erro', 'Não é possível excluir um sensor que possui registros.');
-
-            return;
-        }
-
-        $sensor->delete();
-
-        session()->flash('sucesso', 'Sensor excluído com sucesso.');
-    }
-
-    public function render()
-    {
-        $sensores = Sensor::with('ambiente')
-            ->when($this->busca, function ($q) {
-                $q->where(fn ($q) => $q->where('codigo', 'like', "%{$this->busca}%")
-                    ->orWhere('tipo', 'like', "%{$this->busca}%"));
-            })
-            ->orderBy('codigo')
-            ->paginate(10);
-
-        return view('livewire.sensor.sensor-index', compact('sensores'));
+        $sensores = Sensor::query()->with('ambiente')
+            ->when($this->search !== '', fn ($query) => $query->where(fn ($query) => $query->where('codigo', 'like', '%'.$this->search.'%')->orWhere('tipo', 'like', '%'.$this->search.'%')->orWhere('descricao', 'like', '%'.$this->search.'%')->orWhereHas('ambiente', fn ($query) => $query->where('nome', 'like', '%'.$this->search.'%'))))
+            ->when($this->status !== '', fn ($query) => $query->where('status', $this->status === '1'))
+            ->latest()->paginate(10);
+        return view('livewire.sensor.sensor-index', compact('sensores'))->layout('components.layouts.app', ['title' => 'Sensores | Painel IoT']);
     }
 }

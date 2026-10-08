@@ -1,44 +1,20 @@
 <?php
-
 namespace App\Livewire\Ambiente;
-
 use App\Models\Ambiente;
-use Livewire\Attributes\Title;
+use Illuminate\View\View;
 use Livewire\Component;
-
-#[Title('Novo ambiente')]
 class AmbienteCreate extends Component
 {
     public string $nome = '';
-
     public string $descricao = '';
-
     public bool $status = true;
-
-    protected function rules(): array
+    protected function rules(): array { return ['nome' => ['required','string','max:255'], 'descricao' => ['nullable','string','max:5000'], 'status' => ['boolean']]; }
+    public function salvar(): void
     {
-        return [
-            'nome' => 'required|string|max:255',
-            'descricao' => 'nullable|string',
-            'status' => 'boolean',
-        ];
+        $dados = $this->validate();
+        Ambiente::create($dados);
+        session()->flash('success', 'Ambiente cadastrado com sucesso.');
+        $this->redirectRoute('ambientes.index');
     }
-
-    protected $validationAttributes = [
-        'descricao' => 'descrição',
-    ];
-
-    public function salvar()
-    {
-        Ambiente::create($this->validate());
-
-        session()->flash('sucesso', 'Ambiente cadastrado com sucesso.');
-
-        return $this->redirectRoute('ambientes.index');
-    }
-
-    public function render()
-    {
-        return view('livewire.ambiente.ambiente-create');
-    }
+    public function render(): View { return view('livewire.ambiente.ambiente-create')->layout('components.layouts.app', ['title' => 'Novo ambiente | Painel IoT']); }
 }
