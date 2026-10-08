@@ -14,7 +14,7 @@ Route::get('/dashboard', Dashboard::class)->name('Dashboard');
 
 Route::get('/ambiente', AmbienteIndex::class)->name('ambiente.index');
 Route::get('/ambiente/create', AmbienteCreate::class)->name('ambiente.create');
-Route::get('/ambiente/edit', AmbienteEdit::class)->name('ambiente.edit');
+Route::get('/ambiente/edit/{id}', AmbienteEdit::class)->name('ambiente.edit');
 Route::get('/sensor', SensorIndex::class)->name('sensor.index');
 Route::get('/sensor/create', SensorCreate::class)->name('sensor.create');
 Route::get('/sensor/edit/{id}', SensorEdit::class)->name('sensor.edit');

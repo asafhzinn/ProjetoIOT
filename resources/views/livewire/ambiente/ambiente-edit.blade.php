@@ -1,1 +1,29 @@
-<div data-bs-theme="dark" class="bg-dark text-light min-vh-100 py-4"><div class="container"><div class="mb-4"><a href="{{ route('ambientes.index') }}" class="text-decoration-none text-secondary">← Ambientes</a><h1 class="h3 mt-2">Editar ambiente</h1></div>@include('livewire.partials.alerts')<form wire:submit="atualizar" class="card bg-body-tertiary border-secondary-subtle shadow-sm"><div class="card-body"><div class="mb-3"><label for="nome" class="form-label">Nome *</label><input wire:model="nome" id="nome" class="form-control @error('nome') is-invalid @enderror" type="text" maxlength="255">@error('nome')<div class="invalid-feedback">{{ $message }}</div>@enderror</div><div class="mb-3"><label for="descricao" class="form-label">Descrição</label><textarea wire:model="descricao" id="descricao" class="form-control @error('descricao') is-invalid @enderror" rows="4" maxlength="5000"></textarea>@error('descricao')<div class="invalid-feedback">{{ $message }}</div>@enderror</div><div class="form-check form-switch"><input wire:model="status" id="status" class="form-check-input" type="checkbox"><label for="status" class="form-check-label">Ambiente ativo</label></div></div><div class="card-footer border-secondary-subtle d-flex justify-content-end gap-2"><a href="{{ route('ambientes.index') }}" class="btn btn-outline-light">Cancelar</a><button wire:loading.attr="disabled" class="btn btn-primary" type="submit"><span wire:loading.remove>Atualizar ambiente</span><span wire:loading>Atualizando...</span></button></div></form></div></div>
+<div class="mt-0">
+    <div class="card mt-3">
+        <h5 class="card-header">Cadastro de Ambientes</h5>
+        <div class="card-body">
+            <form wire:submit.prevent="update">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input id="nome" type="text" class="form-control" wire:model="nome" required>
+                    @error('nome') <div class="text-danger">{{ $message }}</div> @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <textarea id="descricao" class="form-control" rows="4" wire:model="descricao"></textarea>
+                    @error('descricao') <div class="text-danger">{{ $message }}</div> @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <div class="form-check form-switch">
+                        <input id="status" class="form-check-input" type="checkbox" role="switch" wire:model="status">
+                        <label for="status" class="form-check-label">{{ $status ? 'Ativo' : 'Inativo' }}</label>
+                    </div>
+                    @error('status') <div class="text-danger">{{ $message }}</div> @enderror
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{{ route('ambiente.index') }}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -18,11 +18,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>#</th>
                         <th>Nome</th>
                         <th>Descrição</th>
                         <th>Status</th>
-                        <th>Campos</th>
                     </tr>
                 </thead>
 
@@ -32,11 +31,20 @@
                         <td>{{$a->id}}</td>
                         <td>{{$a->nome}}</td>
                         <td>{{$a->descricao}}</td>
-                        <td>{{ $a->status ? 'Ativo' : 'Inativo' }}</td>
+                        <td>
+                            <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                            id="status-{{$a->id}}"
+                            wire:click='status({{$a->id}})'
+                            @checked($a->status)>
+                        <span class="badge bg-{{$a->status ? 'success' : 'danger'}}">
+                            {{$a->status ? 'Ativo' : 'Inativo'}}</span></div>
+                            {{--{{ $a->status ? 'Ativo' : 'Inativo' }}--}}</td>
                         <td>
                             <a href="{{ route('ambiente.edit', ['id' => $a->id])}}"
-                                class="btn btn-primary btn-sm">Editar</a>
-                            <button class="btn btn-danger btn-sm" wire:confirm="Deseja excluir o ambiente">Excluir</button>
+                                class="btn btn-primary btn-sm bi bi-pencil-square"> Editar</a>
+                            <button wire:click='delete({{ $a->id }})'
+                    class="btn btn-sm btn-danger bi bi-trash3"> Excluir</button>
                         </td>
                     </tr>
                     @endforeach
