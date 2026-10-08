@@ -18,10 +18,11 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Nome</th>
                         <th>Descrição</th>
                         <th>Status</th>
+                        <th>Campos</th>
                     </tr>
                 </thead>
 

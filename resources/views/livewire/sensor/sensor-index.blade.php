@@ -18,12 +18,13 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th>Ambiente</th>
                         <th>Código</th>
                         <th>Tipo</th>
                         <th>Descrição</th>
                         <th>Status</th>
+                        <th>Campos</th>
                     </tr>
                 </thead>
 
@@ -31,7 +32,7 @@
                     @foreach($sensores as $s)
                     <tr>
                         <td>{{$s->id}}</td>
-                        <td>{{ $nomesAmbientes[$s->ambiente_id] ?? 'Ambiente não encontrado' }} (ID: {{ $s->ambiente_id }})</td>
+                        <td>{{ $nomesAmbientes[$s->ambiente_id] ?? 'Ambiente não encontrado' }} </td>
                         <td>{{$s->codigo}}</td>
                         <td>{{$s->tipo}}</td>
                         <td>{{$s->descricao}}</td>
