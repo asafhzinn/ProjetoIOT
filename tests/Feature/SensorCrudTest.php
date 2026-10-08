@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Livewire\Sensor\Sensores;
+use App\Livewire\Sensor\SensorCreate;
+use App\Livewire\Sensor\SensorEdit;
+use App\Livewire\Sensor\SensorIndex;
 use App\Models\Ambiente;
 use App\Models\Registro;
 use App\Models\Sensor;
@@ -32,29 +34,32 @@ class SensorCrudTest extends TestCase
         ]);
     }
 
-    public function test_pagina_de_sensores_carrega(): void
+    public function test_paginas_carregam(): void
     {
-        $this->criarSensor();
+        $sensor = $this->criarSensor();
 
-        $this->get('/sensores')->assertOk()->assertSeeLivewire(Sensores::class)->assertSee('TEMP01');
+        $this->get('/sensores')->assertOk()->assertSeeLivewire(SensorIndex::class)->assertSee('TEMP01');
+        $this->get('/sensores/create')->assertOk()->assertSeeLivewire(SensorCreate::class);
+        $this->get("/sensores/{$sensor->id}/edit")->assertOk()->assertSeeLivewire(SensorEdit::class);
     }
 
     public function test_cadastra_sensor(): void
     {
-        Livewire::test(Sensores::class)
+        Livewire::test(SensorCreate::class)
             ->set('ambiente_id', $this->ambiente->id)
             ->set('codigo', 'LED01')
             ->set('tipo', 'led')
             ->set('descricao', 'LED da sala')
             ->call('salvar')
-            ->assertHasNoErrors();
+            ->assertHasNoErrors()
+            ->assertRedirect(route('sensores.index'));
 
         $this->assertDatabaseHas('sensors', ['codigo' => 'LED01', 'ambiente_id' => $this->ambiente->id]);
     }
 
     public function test_valida_campos_obrigatorios(): void
     {
-        Livewire::test(Sensores::class)
+        Livewire::test(SensorCreate::class)
             ->call('salvar')
             ->assertHasErrors(['ambiente_id', 'codigo', 'tipo', 'descricao']);
     }
@@ -63,7 +68,7 @@ class SensorCrudTest extends TestCase
     {
         $this->criarSensor('TEMP01');
 
-        Livewire::test(Sensores::class)
+        Livewire::test(SensorCreate::class)
             ->set('ambiente_id', $this->ambiente->id)
             ->set('codigo', 'TEMP01')
             ->set('tipo', 'temperatura')
@@ -76,12 +81,12 @@ class SensorCrudTest extends TestCase
     {
         $sensor = $this->criarSensor();
 
-        Livewire::test(Sensores::class)
-            ->call('editar', $sensor->id)
+        Livewire::test(SensorEdit::class, ['sensor' => $sensor])
             ->assertSet('codigo', 'TEMP01')
             ->set('tipo', 'umidade')
             ->call('salvar')
-            ->assertHasNoErrors();
+            ->assertHasNoErrors()
+            ->assertRedirect(route('sensores.index'));
 
         $this->assertDatabaseHas('sensors', ['id' => $sensor->id, 'codigo' => 'TEMP01', 'tipo' => 'umidade']);
     }
@@ -90,7 +95,7 @@ class SensorCrudTest extends TestCase
     {
         $sensor = $this->criarSensor();
 
-        Livewire::test(Sensores::class)->call('excluir', $sensor->id);
+        Livewire::test(SensorIndex::class)->call('excluir', $sensor->id);
 
         $this->assertDatabaseMissing('sensors', ['id' => $sensor->id]);
     }
@@ -100,7 +105,7 @@ class SensorCrudTest extends TestCase
         $sensor = $this->criarSensor();
         Registro::create(['sensor_id' => $sensor->id, 'valor' => '25', 'unidade' => 'C', 'data_hora' => now()]);
 
-        Livewire::test(Sensores::class)->call('excluir', $sensor->id);
+        Livewire::test(SensorIndex::class)->call('excluir', $sensor->id);
 
         $this->assertDatabaseHas('sensors', ['id' => $sensor->id]);
     }
